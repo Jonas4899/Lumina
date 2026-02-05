@@ -1,6 +1,5 @@
-from app.config import settings
 
-def calculate_cost(response):
+def calculate_cost(response, settings):
     """
     Calcula el costo de una llamada a la API
     """

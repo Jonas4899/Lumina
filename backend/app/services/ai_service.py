@@ -31,7 +31,7 @@ async def generate_lesson_module(user_query: str, settings: Settings):
         ]
     )
 
-    cost_info = calculate_cost(response)
+    cost_info = calculate_cost(response, settings)
 
     return {
         "lesson": response.choices[0].message.content,
