@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import lessons
+from app.api.routes import docs, lessons
 
 app = FastAPI(
     title="Lumina API",
@@ -21,3 +21,4 @@ app.add_middleware(
 )
 
 app.include_router(lessons.router, prefix="/api/lessons", tags=["lessons"])
+app.include_router(docs.router, prefix="/api/docs", tags=["docs"])
