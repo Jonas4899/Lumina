@@ -7,6 +7,7 @@ from app.models.docs import UploadResponse, FileListResponse
 router = APIRouter()
 
 DOCS_DIR = Path(__file__).parent.parent.parent.parent / "docs"
+DOCS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def _sanitize_filename(filename: str) -> str:
@@ -17,12 +18,12 @@ def _sanitize_filename(filename: str) -> str:
 
 
 @router.post("/upload", response_model=UploadResponse, summary="Upload documents (PDFs) into the working directory of knowledge.")
-async def upload_document(file: UploadFile = File(...)):
+def upload_document(file: UploadFile = File(...)):
     """
     Upload a PDF document to the docs folder.
     """
     #* Validate file to be a Valid PDF
-    content = await file.read(5)
+    content = file.read(5)
 
     if not content.startswith(b"%PDF-"):
         raise HTTPException(
@@ -30,7 +31,7 @@ async def upload_document(file: UploadFile = File(...)):
             detail="File content is not a valid PDF! (Invalid magic bytes)"
         )
     
-    await file.seek(0)
+    file.seek(0)
 
     if file.content_type != "application/pdf":
         raise HTTPException(
@@ -67,10 +68,6 @@ async def upload_document(file: UploadFile = File(...)):
 
 @router.get("/list", response_model=FileListResponse)
 async def get_document_list():
-    if not DOCS_DIR.exists():
-        return FileListResponse(file_list=[])
-    
-
     dir_files = [
         f.name for f in DOCS_DIR.iterdir()
         if f.is_file() and f.suffix.lower() == ".pdf"
