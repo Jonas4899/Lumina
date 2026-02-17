@@ -61,7 +61,6 @@ async def upload_document(file: UploadFile = File(...)):
 
     return UploadResponse(
         filename=safe_name,
-        path=str(dest),
         size_bytes=file_size,
     )
 
