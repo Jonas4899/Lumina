@@ -1,7 +1,7 @@
 from openai import AsyncOpenAI
 from app.config import Settings
 from app.services.cost_calculator import calculate_cost
-from app.services.pdf_service import get_documentation
+from app.services.retrieval_service import retrieve_relevant_chunks, format_chunks_as_context
 from app.prompts.system_prompt import LESSON_GENERATOR_PROMPT
 
 async def generate_lesson_module(user_query: str, settings: Settings):
@@ -14,9 +14,10 @@ async def generate_lesson_module(user_query: str, settings: Settings):
         base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
     )
 
-    md_doc = get_documentation()
+    chunks = await retrieve_relevant_chunks(user_query, settings)
+    documentation = format_chunks_as_context(chunks)
 
-    system_prompt = LESSON_GENERATOR_PROMPT.format(documentation=md_doc)
+    system_prompt = LESSON_GENERATOR_PROMPT.format(documentation=documentation)
 
     response = await client.chat.completions.create(
         model=settings.ai_model,

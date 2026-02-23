@@ -62,8 +62,10 @@ Your lesson must follow this structure:
 
 ## IMPORTANT - Documentation Injection Point:
 
-Below is where the official technical documentation will be injected. This is the 
-source material you must transform into a lesson:
+Below are the most relevant excerpts retrieved from the documentation library based on
+the user's learning request. Each excerpt is labeled with its source section headers.
+Focus your lesson on these excerpts. If the provided excerpts don't fully cover the
+topic requested by the user, mention what additional topics they might explore next:
 
 ---
 {documentation}

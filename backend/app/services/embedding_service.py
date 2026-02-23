@@ -41,3 +41,16 @@ async def embed_chunks(
         all_vectors.extend(batch_vectors)
 
     return all_vectors
+
+
+async def embed_query(query: str, settings: Settings) -> list[float]:
+    client = AsyncOpenAI(
+        api_key=settings.openai_api_key,
+    )
+
+    response = await client.embeddings.create(
+        model=settings.embedding_model,
+        input=query,
+    )
+
+    return response.data[0].embedding

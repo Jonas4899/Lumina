@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     chroma_persist_dir: str = "chroma_data"
     chroma_collection_name: str = "lumina_docs"
 
+    # Retrieval config
+    retrieval_top_k: int = 15
+
     # App config
     debug: bool = True
     
